@@ -1,0 +1,5 @@
+background
+dataset
+synthetic_dataset
+yolo_training
+best_model.pth

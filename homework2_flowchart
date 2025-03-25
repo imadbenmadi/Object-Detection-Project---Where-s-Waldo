@@ -1,0 +1,49 @@
+digraph "Simplified Object Detection" {
+	rankdir=LR
+	node [fontname=Arial fontsize=12 shape=box style=filled]
+	Imports [label="Necessary Imports
+(Easy)" fillcolor="#A0E7A0"]
+	LoadObjects [label="Load in Your Objects
+(Easy)" fillcolor="#A0E7A0"]
+	LoadBackgrounds [label="Load in Your Backgrounds
+(Easy)" fillcolor="#A0E7A0"]
+	AugmentData [label="Define Data Augmentations
+(Easy)" fillcolor="#A0E7A0"]
+	DatasetDataloader [label="Create a Dataset and Dataloaders
+(Easy)" fillcolor="#A0E7A0"]
+	VisualizeSample [label="Visualize Training Data
+(Easy)" fillcolor="#A0E7A0"]
+	CreateModel [label="Create an Object Detection Model
+(Moderate)" fillcolor="#F6D49A"]
+	TorchSummary [label="Plot Model Parameter Count and Size
+(Easy)" fillcolor="#A0E7A0"]
+	Hyperparameters [label="Define Hyperparameters
+(Easy)" fillcolor="#A0E7A0"]
+	TrainModel [label="Train the Custom Object Detection Model
+(Moderate)" fillcolor="#F6D49A"]
+	VisualizeTrain [label="Visualize Training Metrics
+(Easy)" fillcolor="#A0E7A0"]
+	RunInference [label="Run Inference on the Object Detection Models
+(Difficult)" fillcolor="#F6A0A0"]
+	VisPred [label="Visualize Model Predictions
+(Difficult)" fillcolor="#F6A0A0"]
+	LoadYOLO [label="Load an Existing Object Detection Model
+(Moderate)" fillcolor="#F6D49A"]
+	EvalYOLO [label="Evaluate the YOLO Model
+(Moderate)" fillcolor="#F6D49A"]
+	Imports -> LoadObjects
+	Imports -> LoadBackgrounds
+	LoadObjects -> AugmentData
+	LoadBackgrounds -> AugmentData
+	AugmentData -> DatasetDataloader
+	DatasetDataloader -> VisualizeSample
+	VisualizeSample -> CreateModel
+	CreateModel -> TorchSummary
+	CreateModel -> Hyperparameters
+	Hyperparameters -> TrainModel
+	TrainModel -> VisualizeTrain
+	TrainModel -> RunInference
+	TrainModel -> VisPred
+	VisualizeSample -> LoadYOLO
+	LoadYOLO -> EvalYOLO
+}
