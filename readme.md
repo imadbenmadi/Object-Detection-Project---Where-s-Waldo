@@ -265,7 +265,7 @@ The interface is intuitive for users who want to experiment with placing objects
 https://github.com/user-attachments/assets/339f8765-a359-41c3-ae68-3f9cea109be9
 
 
-![Screenshot 2025-03-27 205852]()
+![Screenshot 2025-03-27 205852](https://github.com/imadbenmadi/Object-Detection-Project---Where-s-Waldo/blob/main/assets/ui%20screen.png)
 
 
 
