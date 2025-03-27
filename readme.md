@@ -229,29 +229,7 @@ class EarlyStopping:
 
 4. **Challenge**: Small objects detection
    - **Solution**: Implemented Feature Pyramid Network to enhance multi-scale capabilities
-
-## How to Use the Project
-
-1. **Dataset Generation**:
-   ```python
-   python generate_dataset.py --num_train 5000 --num_val 1000 --num_test 200
-   ```
-
-2. **Custom Model Training**:
-   ```python
-   python train.py --epochs 50 --batch_size 32 --lr 0.001
-   ```
-
-3. **YOLOv8 Training**:
-   ```python
-   python train_yolo.py --epochs 50 --batch_size 16
-   ```
-
-4. **Inference**:
-   ```python
-   python detect.py --model_path best_model.pth --image_path test.jpg
-   ```
-
+  
 ## Future Improvements
 
 1. Extend to multi-object detection with Non-Maximum Suppression
@@ -260,6 +238,37 @@ class EarlyStopping:
 4. Test on real Where's Waldo puzzle images
 5. Implement anchor-based detection for better accuracy
 6. Add attention mechanisms to focus on important features
+---
+this ui the The WaldoDetectorApp is an interactive application built with Python's tkinter library that simulates an object detection system for finding characters like Waldo in complex scenes. The application provides:
+
+1. **Background Selection**: Users can browse and select from a collection of background images from a dataset directory.
+
+2. **Object Selection**: Users can choose from object images (like Waldo, Wilma, and other characters) stored in an objects directory.
+
+3. **Interactive Placement**: Objects can be placed on the background via drag-and-drop functionality, allowing users to create test scenarios.
+
+4. **Detection Simulation**: A "Detect Object" button simulates running an object detection model, displaying a bounding box around the placed object along with a confidence score.
+
+5. **Results Display**: Detection results including confidence and position coordinates are shown in a text area.
+
+The application is structured with:
+- A canvas for image display and interaction
+- A control panel with options for background/object selection and detection settings
+- Support for object placement through mouse events
+- Visual feedback with bounding boxes for detection results
+
+This tool could be used for educational purposes to understand how object detection systems work, or for testing and demonstrating object detection models in a controlled environment.
+
+The interface is intuitive for users who want to experiment with placing objects in scenes and seeing how detection algorithms might identify them, without requiring programming knowledge.
+
+
+https://github.com/user-attachments/assets/339f8765-a359-41c3-ae68-3f9cea109be9
+
+
+![Screenshot 2025-03-27 205852](https://github.com/user-attachments/assets/d2b3b05c-bea3-4efc-aa68-64450ba276d7)
+
+
+
 
 ## Conclusion
 
