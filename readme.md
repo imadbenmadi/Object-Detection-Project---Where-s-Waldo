@@ -274,4 +274,3 @@ https://github.com/user-attachments/assets/339f8765-a359-41c3-ae68-3f9cea109be9
 
 This project successfully demonstrates the implementation of a simplified object detection system using both custom neural networks and state-of-the-art YOLOv8 models. The synthetic dataset approach provides a controlled environment for training and evaluation, while the comparison between models offers insights into different object detection paradigms.
 
-Similar code found with 3 license types
