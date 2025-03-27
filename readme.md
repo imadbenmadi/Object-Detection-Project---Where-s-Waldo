@@ -7,60 +7,71 @@ This project implements a simplified object detection system to identify and loc
 ## Dataset Creation
 
 ### Character Selection
+
 We selected three main characters from the "Where's Waldo?" series:
-- **Waldo**: Characterized by his iconic red and white striped shirt and hat
-- **Wilma**: Waldo's friend with blue clothing
-- **Wenda**: Character with pink/red striped clothing
+
+-   **Waldo**: Characterized by his iconic red and white striped shirt and hat
+-   **Wilma**: Waldo's friend with blue clothing
+-   **Wenda**: Character with pink/red striped clothing
 
 ### Background Collection
-- Used `icrawler` library to download 100+ themed background images
-- Backgrounds include cartoon scenes, crowded illustrations, and Where's Waldo-style puzzles
-- Images were resized to 640×640 pixels for consistency
+
+-   Used `icrawler` library to download 100+ themed background images
+-   Backgrounds include cartoon scenes, crowded illustrations, and Where's Waldo-style puzzles
+-   Images were resized to 640×640 pixels for consistency
 
 ### Synthetic Dataset Generation Process
+
 1. **Object Preparation**:
-   - Characters were extracted with transparent backgrounds using image editing tools
-   - Each character was saved as a PNG with alpha channel
+
+    - Characters were extracted with transparent backgrounds using image editing tools
+    - Each character was saved as a PNG with alpha channel
 
 2. **Dataset Generation**:
-   - Generated 5,000 training images, 1,000 validation images, and 200 test images
-   - For each image:
-     - Randomly selected a background
-     - Randomly chose one character
-     - Randomly scaled the character (50-100% of original size)
-     - Placed character at random coordinates on the background
-     - Calculated bounding box coordinates in YOLO format: `<class_id> <x_center> <y_center> <width> <height>`
-     - Saved the image and corresponding annotation
+
+    - Generated 5,000 training images, 1,000 validation images, and 200 test images
+    - For each image:
+        - Randomly selected a background
+        - Randomly chose one character
+        - Randomly scaled the character (50-100% of original size)
+        - Placed character at random coordinates on the background
+        - Calculated bounding box coordinates in YOLO format: `<class_id> <x_center> <y_center> <width> <height>`
+        - Saved the image and corresponding annotation
 
 3. **Data Format**:
-   - Images saved as JPG files
-   - Annotations saved in YOLO format (normalized coordinates)
-   - Directory structure compatible with both custom training and YOLOv8
+    - Images saved as JPG files
+    - Annotations saved in YOLO format (normalized coordinates)
+    - Directory structure compatible with both custom training and YOLOv8
 
 ## Custom Model Architecture
 
 ### Backbone Network
-- **ResNet18**: Pre-trained on ImageNet, used as feature extractor
-- Removed final fully connected layer to obtain feature maps
-- Extracted features from multiple layers for multi-scale detection
+
+-   **ResNet18**: Pre-trained on ImageNet, used as feature extractor
+-   Removed final fully connected layer to obtain feature maps
+-   Extracted features from multiple layers for multi-scale detection
 
 ### Feature Pyramid Network (FPN)
-- Implemented a simplified FPN to merge features from different scales
-- Used 1×1 convolutions to reduce channel dimensions
-- Added skip connections between layers for better gradient flow
+
+-   Implemented a simplified FPN to merge features from different scales
+-   Used 1×1 convolutions to reduce channel dimensions
+-   Added skip connections between layers for better gradient flow
 
 ### Detection Heads
+
 1. **Classification Head**:
-   - Two fully connected layers (512→256→3)
-   - Outputs class probabilities for the 3 characters
-   - Softmax activation for final prediction
+
+    - Two fully connected layers (512→256→3)
+    - Outputs class probabilities for the 3 characters
+    - Softmax activation for final prediction
 
 2. **Regression Head**:
-   - Two fully connected layers (512→256→4)
-   - Outputs normalized coordinates (x_center, y_center, width, height)
-   - No activation function on output layer
+    - Two fully connected layers (512→256→4)
+    - Outputs normalized coordinates (x_center, y_center, width, height)
+    - No activation function on output layer
 
 ### Model Summary
+
 ```
 ----------------------------------------------------------------
         Layer (type)               Output Shape         Param #
@@ -93,25 +104,30 @@ Non-trainable params: 0
 ## Training Process
 
 ### Data Augmentation
-- **Horizontal flips**: 50% probability
-- **Color jitter**: Randomized brightness (±0.2), contrast (±0.2), saturation (±0.2), hue (±0.1)
-- **Normalization**: Using ImageNet mean [0.485, 0.456, 0.406] and std [0.229, 0.224, 0.225]
+
+-   **Horizontal flips**: 50% probability
+-   **Color jitter**: Randomized brightness (±0.2), contrast (±0.2), saturation (±0.2), hue (±0.1)
+-   **Normalization**: Using ImageNet mean [0.485, 0.456, 0.406] and std [0.229, 0.224, 0.225]
 
 ### Loss Functions
-- **Classification Loss**: Cross-Entropy Loss
-- **Regression Loss**: Smooth L1 Loss (Huber Loss)
-- **Total Loss**: Classification Loss + λ * Regression Loss (λ=10)
+
+-   **Classification Loss**: Cross-Entropy Loss
+-   **Regression Loss**: Smooth L1 Loss (Huber Loss)
+-   **Total Loss**: Classification Loss + λ \* Regression Loss (λ=10)
 
 ### Training Parameters
-- **Optimizer**: Adam with learning rate of 0.001
-- **Weight decay**: 1e-4 for regularization
-- **Batch size**: 32
-- **Epochs**: 50 with early stopping
-- **Learning rate scheduler**: ReduceLROnPlateau (patience=5, factor=0.1)
-- **Device**: CUDA GPU (when available)
+
+-   **Optimizer**: Adam with learning rate of 0.001
+-   **Weight decay**: 1e-4 for regularization
+-   **Batch size**: 32
+-   **Epochs**: 50 with early stopping
+-   **Learning rate scheduler**: ReduceLROnPlateau (patience=5, factor=0.1)
+-   **Device**: CUDA GPU (when available)
 
 ### Training Loop
+
 The training loop included:
+
 1. Forward pass through the model
 2. Computation of classification and regression losses
 3. Backpropagation of gradients
@@ -124,12 +140,15 @@ The training loop included:
 ## YOLOv8 Implementation
 
 ### Model Selection
-- Used the YOLOv8 nano model (`yolov8n.pt`)
-- Lightweight model with 3.2M parameters for efficient training and inference
+
+-   Used the YOLOv8 nano model (`yolov8n.pt`)
+-   Lightweight model with 3.2M parameters for efficient training and inference
 
 ### Fine-tuning Process
-- Created YAML configuration file with dataset paths and class names
-- Used Ultralytics API for fine-tuning:
+
+-   Created YAML configuration file with dataset paths and class names
+-   Used Ultralytics API for fine-tuning:
+
 ```python
 from ultralytics import YOLO
 model = YOLO('yolov8n.pt')
@@ -137,17 +156,20 @@ model.train(data='dataset.yaml', epochs=50, imgsz=640, batch=16)
 ```
 
 ### YOLOv8 Training Parameters
-- **Learning rate**: 0.01 with cosine scheduler
-- **Optimizer**: SGD with momentum
-- **Image size**: 640×640
-- **Batch size**: 16
-- **Epochs**: 50
-- **Augmentation**: Default YOLOv8 augmentations (mosaic, mixup, etc.)
+
+-   **Learning rate**: 0.01 with cosine scheduler
+-   **Optimizer**: SGD with momentum
+-   **Image size**: 640×640
+-   **Batch size**: 16
+-   **Epochs**: 50
+-   **Augmentation**: Default YOLOv8 augmentations (mosaic, mixup, etc.)
 
 ## Evaluation Metrics
 
 ### Performance Metrics
+
 Both models were evaluated using:
+
 1. **Mean Average Precision (mAP@0.5)**: Primary metric for object detection
 2. **Intersection over Union (IoU)**: Measures overlap between predicted and ground truth boxes
 3. **Classification Accuracy**: Percentage of correctly classified objects
@@ -156,30 +178,34 @@ Both models were evaluated using:
 6. **F1-Score**: Harmonic mean of precision and recall
 
 ### Results Visualization
-- Loss curves (training and validation)
-- Prediction visualization on test images
-- Confusion matrices for classification accuracy
-- Precision-Recall curves
-- mAP calculation at different IoU thresholds
+
+-   Loss curves (training and validation)
+-   Prediction visualization on test images
+-   Confusion matrices for classification accuracy
+-   Precision-Recall curves
+-   mAP calculation at different IoU thresholds
 
 ## Implementation Details
 
 ### Key Libraries Used
-- **PyTorch**: Main deep learning framework
-- **torchvision**: For pre-trained models and transforms
-- **NumPy**: For numerical operations
-- **Matplotlib/Seaborn**: For visualization
-- **Pillow (PIL)**: Image processing
-- **tqdm**: Progress bars
-- **Ultralytics**: YOLO implementation
-- **icrawler**: Web scraping for background images
+
+-   **PyTorch**: Main deep learning framework
+-   **torchvision**: For pre-trained models and transforms
+-   **NumPy**: For numerical operations
+-   **Matplotlib/Seaborn**: For visualization
+-   **Pillow (PIL)**: Image processing
+-   **tqdm**: Progress bars
+-   **Ultralytics**: YOLO implementation
+-   **icrawler**: Web scraping for background images
 
 ### Data Loading
-- Custom `SyntheticDataset` class inheriting from `torch.utils.data.Dataset`
-- Implemented `__getitem__` and `__len__` methods
-- Used `DataLoader` with shuffling, batching, and multi-processing
+
+-   Custom `SyntheticDataset` class inheriting from `torch.utils.data.Dataset`
+-   Implemented `__getitem__` and `__len__` methods
+-   Used `DataLoader` with shuffling, batching, and multi-processing
 
 ### Inference Pipeline
+
 1. Load image and preprocess (resize, normalize)
 2. Forward pass through model
 3. Extract classification probabilities and bounding box coordinates
@@ -188,6 +214,7 @@ Both models were evaluated using:
 6. Draw bounding boxes and class labels on image
 
 ### Early Stopping Implementation
+
 ```python
 class EarlyStopping:
     def __init__(self, patience=10, delta=0):
@@ -196,10 +223,10 @@ class EarlyStopping:
         self.counter = 0
         self.best_score = None
         self.early_stop = False
-        
+
     def __call__(self, val_loss, model, path):
         score = -val_loss
-        
+
         if self.best_score is None:
             self.best_score = score
             self.save_checkpoint(val_loss, model, path)
@@ -211,7 +238,7 @@ class EarlyStopping:
             self.best_score = score
             self.save_checkpoint(val_loss, model, path)
             self.counter = 0
-            
+
     def save_checkpoint(self, val_loss, model, path):
         torch.save(model.state_dict(), path)
 ```
@@ -219,16 +246,19 @@ class EarlyStopping:
 ## Challenges and Solutions
 
 1. **Challenge**: Bounding box regression accuracy
-   - **Solution**: Implemented Smooth L1 Loss and increased its weight in total loss
+
+    - **Solution**: Implemented Smooth L1 Loss and increased its weight in total loss
 
 2. **Challenge**: Model overfitting due to simple backgrounds
-   - **Solution**: Added more complex backgrounds and increased data augmentation
+
+    - **Solution**: Added more complex backgrounds and increased data augmentation
 
 3. **Challenge**: Balancing classification and regression tasks
-   - **Solution**: Tuned the λ parameter to balance the two loss components
+
+    - **Solution**: Tuned the λ parameter to balance the two loss components
 
 4. **Challenge**: Small objects detection
-   - **Solution**: Implemented Feature Pyramid Network to enhance multi-scale capabilities
+    - **Solution**: Implemented Feature Pyramid Network to enhance multi-scale capabilities
 
 ## Future Improvements
 
@@ -239,13 +269,17 @@ class EarlyStopping:
 5. Implement anchor-based detection for better accuracy
 6. Add attention mechanisms to focus on important features
 
+#### **production-ready interface where the user can test the mdoel**
 
-
-
-#### **production-ready interface where the user can test the mdoel**  
 A tkinter-based GUI application that allows users to select background images and character objects (like Waldo), place them via drag-and-drop, and simulate object detection with visualization of results.
+
+
+[Watch the video](https://youtu.be/1VliO8UtMd8)
+
+
 ![Image Description](https://github.com/user-attachments/assets/d2b3b05c-bea3-4efc-aa68-64450ba276d7)
 <video controls width="600">
+
   <source src="https://github.com/user-attachments/assets/339f8765-a359-41c3-ae68-3f9cea109be9" type="video/mp4">
   Your browser does not support the video tag.
 </video>
