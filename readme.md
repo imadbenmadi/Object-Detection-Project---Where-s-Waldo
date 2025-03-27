@@ -265,7 +265,7 @@ The interface is intuitive for users who want to experiment with placing objects
 https://github.com/user-attachments/assets/339f8765-a359-41c3-ae68-3f9cea109be9
 
 
-![Screenshot 2025-03-27 205852](https://github.com/user-attachments/assets/d2b3b05c-bea3-4efc-aa68-64450ba276d7)
+![Screenshot 2025-03-27 205852]()
 
 
 
