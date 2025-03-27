@@ -230,28 +230,6 @@ class EarlyStopping:
 4. **Challenge**: Small objects detection
    - **Solution**: Implemented Feature Pyramid Network to enhance multi-scale capabilities
 
-## How to Use the Project
-
-1. **Dataset Generation**:
-   ```python
-   python generate_dataset.py --num_train 5000 --num_val 1000 --num_test 200
-   ```
-
-2. **Custom Model Training**:
-   ```python
-   python train.py --epochs 50 --batch_size 32 --lr 0.001
-   ```
-
-3. **YOLOv8 Training**:
-   ```python
-   python train_yolo.py --epochs 50 --batch_size 16
-   ```
-
-4. **Inference**:
-   ```python
-   python detect.py --model_path best_model.pth --image_path test.jpg
-   ```
-
 ## Future Improvements
 
 1. Extend to multi-object detection with Non-Maximum Suppression
@@ -260,6 +238,18 @@ class EarlyStopping:
 4. Test on real Where's Waldo puzzle images
 5. Implement anchor-based detection for better accuracy
 6. Add attention mechanisms to focus on important features
+
+
+
+
+#### **production-ready interface where the user can test the mdoel**  
+A tkinter-based GUI application that allows users to select background images and character objects (like Waldo), place them via drag-and-drop, and simulate object detection with visualization of results.
+![Image Description](https://github.com/user-attachments/assets/d2b3b05c-bea3-4efc-aa68-64450ba276d7)
+<video controls width="600">
+  <source src="https://github.com/user-attachments/assets/339f8765-a359-41c3-ae68-3f9cea109be9" type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+
 
 ## Conclusion
 
