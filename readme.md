@@ -289,4 +289,3 @@ A tkinter-based GUI application that allows users to select background images an
 
 This project successfully demonstrates the implementation of a simplified object detection system using both custom neural networks and state-of-the-art YOLOv8 models. The synthetic dataset approach provides a controlled environment for training and evaluation, while the comparison between models offers insights into different object detection paradigms.
 
-Similar code found with 3 license types
